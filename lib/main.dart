@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/home/home_screen.dart';
+import 'package:todo_app/my_theme_data.dart';
 
 void main() {
-  runApp( MyApp());
+  runApp(MyApp());
 }
-class MyApp extends StatelessWidget {
 
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute:HomeScreen.routeName ,
+      initialRoute: HomeScreen.routeName,
       routes: {
-        HomeScreen.routeName:(context)=>HomeScreen(),
+        HomeScreen.routeName: (context) => HomeScreen(),
       },
+      theme: MyThemeData.lightTheme,
     );
   }
 }
-
