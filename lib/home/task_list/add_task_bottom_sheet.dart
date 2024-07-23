@@ -16,7 +16,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(12),
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       width: double.infinity,
       child: Column(
         children: [
@@ -41,7 +41,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     },
                     decoration: InputDecoration(
                         hintText: AppLocalizations.of(context)!.task_title,
-                        hintStyle: TextStyle(color: AppColors.whiteColor)),
+                        hintStyle: Theme.of(context).textTheme.bodyMedium),
                   ),
                   SizedBox(
                     height: 10,
@@ -50,11 +50,11 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     onChanged: (text) {
                       description = text;
                     },
-                    maxLines: 4,
+                    maxLines: 2,
                     decoration: InputDecoration(
                         hintText:
                             AppLocalizations.of(context)!.task_descripation,
-                        hintStyle: TextStyle(color: AppColors.whiteColor)),
+                        hintStyle: Theme.of(context).textTheme.bodyMedium),
                     validator: (text) {
                       if (text == null || text.isEmpty) {
                         return 'Please Enter Descripation';
