@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/app_colors.dart';
-import 'package:todo_app/home/home_task_list/settings_tab.dart';
-import 'package:todo_app/home/home_task_list/task_list.dart';
+import 'package:todo_app/home/settings/settings_tab.dart';
+import 'package:todo_app/home/task_list/add_task_bottom_sheet.dart';
+import 'package:todo_app/home/task_list/task_list.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = 'home_screen';
@@ -23,7 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        padding: EdgeInsets.all(2),
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.001),
         shape: CircularNotchedRectangle(),
         notchMargin: 8,
         child: BottomNavigationBar(
@@ -40,7 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          addTaskBottomSheet();
+        },
         child: Icon(
           Icons.add,
           color: AppColors.whiteColor,
@@ -61,4 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<Widget> tabs = [TaskList(), SettingsTab()];
+
+  void addTaskBottomSheet() {
+    showModalBottomSheet(
+        context: context, builder: (context) => AddTaskBottomSheet());
+  }
 }
