@@ -1,0 +1,16 @@
+{
+"app_title":"اداره المهام",
+"task_list":"قائمه المهام",
+"settings":"الاعدادت",
+"bottom_sheet_title":"اضف مهام جديده",
+"task_title":"ادخل عنوان التاسك",
+"task_descripation":"ادخل موضوع التاسك",
+"language":"لغه",
+"theme":"الشكل",
+"english":"الانجليزيه",
+"arabic":"العربية",
+"light":"نهاري",
+"dark":"ليلي",
+"select_date":"اختار المعاد",
+"add":"اضف"
+}

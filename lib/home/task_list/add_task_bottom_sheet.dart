@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:todo_app/app_colors.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
@@ -20,7 +21,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
       child: Column(
         children: [
           Text(
-            'Add New Task',
+            AppLocalizations.of(context)!.bottom_sheet_title,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Form(
@@ -38,7 +39,9 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                       }
                       return null;
                     },
-                    decoration: InputDecoration(hintText: 'Enter Task title'),
+                    decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context)!.task_title,
+                        hintStyle: TextStyle(color: AppColors.whiteColor)),
                   ),
                   SizedBox(
                     height: 10,
@@ -49,8 +52,9 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     },
                     maxLines: 4,
                     decoration: InputDecoration(
-                      hintText: 'Enter Task Descripation',
-                    ),
+                        hintText:
+                            AppLocalizations.of(context)!.task_descripation,
+                        hintStyle: TextStyle(color: AppColors.whiteColor)),
                     validator: (text) {
                       if (text == null || text.isEmpty) {
                         return 'Please Enter Descripation';
@@ -61,7 +65,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Select Date',
+                      AppLocalizations.of(context)!.select_date,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
@@ -83,8 +87,8 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                       addTask();
                     },
                     child: Text(
-                      'ADD',
-                      style: Theme.of(context).textTheme.titleLarge,
+                      AppLocalizations.of(context)!.add,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryColor),
