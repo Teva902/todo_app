@@ -22,7 +22,7 @@ class MyThemeData {
             color: AppColors.blackColor),
         bodyMedium: GoogleFonts.inter(
             fontSize: 18,
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w600,
             color: AppColors.blackColor),
       ),
       bottomSheetTheme: BottomSheetThemeData(
