@@ -42,4 +42,46 @@ class MyThemeData {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(35),
               side: BorderSide(width: 4, color: AppColors.whiteColor))));
+
+  static final ThemeData darkTheme = ThemeData(
+      primaryColor: AppColors.primaryColor,
+      scaffoldBackgroundColor: AppColors.backgroundDarkColor,
+      appBarTheme: AppBarTheme(backgroundColor: AppColors.primaryColor),
+      textTheme: TextTheme(
+        titleLarge: GoogleFonts.poppins(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: AppColors.blackColor),
+        titleMedium: GoogleFonts.poppins(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: AppColors.whiteColor),
+        bodyLarge: GoogleFonts.inter(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            color: AppColors.whiteColor),
+        bodyMedium: GoogleFonts.inter(
+            fontSize: 18,
+            fontWeight: FontWeight.w400,
+            color: AppColors.whiteColor),
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+          backgroundColor: AppColors.blackDarkColor,
+          shape: RoundedRectangleBorder(
+              side: BorderSide(color: AppColors.blackColor, width: 5),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15)))),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          selectedItemColor: AppColors.primaryColor,
+          unselectedItemColor: AppColors.whiteColor,
+          showUnselectedLabels: false),
+      bottomAppBarTheme: BottomAppBarTheme(color: AppColors.blackDarkColor),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: AppColors.primaryColor,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(35),
+              side: BorderSide(width: 4, color: AppColors.whiteColor))));
 }
