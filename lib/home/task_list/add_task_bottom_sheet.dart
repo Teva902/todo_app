@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/app_colors.dart';
+import 'package:todo_app/fire_base_utils.dart';
+import 'package:todo_app/model/task.dart';
+import 'package:todo_app/providers/list_provider.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
   @override
@@ -12,9 +16,11 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   var selectedDate = DateTime.now();
   String title = '';
   String description = '';
+  late ListProvider listProvider;
 
   @override
   Widget build(BuildContext context) {
+    listProvider = Provider.of<ListProvider>(context);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       width: double.infinity,
@@ -53,7 +59,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     maxLines: 2,
                     decoration: InputDecoration(
                         hintText:
-                            AppLocalizations.of(context)!.task_descripation,
+                        AppLocalizations.of(context)!.task_descripation,
                         hintStyle: Theme.of(context).textTheme.bodyMedium),
                     validator: (text) {
                       if (text == null || text.isEmpty) {
@@ -101,7 +107,16 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   }
 
   void addTask() {
-    if (formKey.currentState!.validate() == true) {}
+    if (formKey.currentState!.validate() == true) {
+      Task task =
+          Task(title: title, description: description, dateTime: selectedDate);
+      FireBaseUtils.addTaskToFireStore(task).timeout(Duration(seconds: 1),
+          onTimeout: () {
+        print('task added successfully');
+        listProvider.getAllTasksFromFireStore();
+        Navigator.pop(context);
+      });
+    }
   }
 
   void showClander() async {
