@@ -21,4 +21,10 @@ class FireBaseUtils {
   static Future<void> deleteTaskFromFireStore(Task task) {
     return getTasksCollection().doc(task.id).delete();
   }
+
+//static Future<void> updateTaskFromFireStore(Task task) {
+//var taskDocRef = getTasksCollection().doc(task.id);
+// var taskData = task.toFireStore();
+//return taskDocRef.update(taskData);
+//}
 }
