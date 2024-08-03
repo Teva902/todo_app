@@ -2,6 +2,7 @@ import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/home/task_list/task_list_item.dart';
+import 'package:todo_app/home/task_list/task_list_item_done.dart';
 import 'package:todo_app/providers/list_provider.dart';
 
 class TaskList extends StatefulWidget {
@@ -10,9 +11,11 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
+  late ListProvider providerList;
+
   @override
   Widget build(BuildContext context) {
-    var providerList = Provider.of<ListProvider>(context);
+    providerList = Provider.of<ListProvider>(context);
     if (providerList.taskList.isEmpty) {
       providerList.getAllTasksFromFireStore();
     }
@@ -29,7 +32,7 @@ class _TaskListState extends State<TaskList> {
           ),
           dayProps: const EasyDayProps(
             inactiveDayStyle:
-                DayStyle(decoration: BoxDecoration(color: Colors.white)),
+            DayStyle(decoration: BoxDecoration(color: Colors.white)),
             todayHighlightStyle: TodayHighlightStyle.withBackground,
             todayHighlightColor: Colors.white,
             dayStructure: DayStructure.dayStrDayNum,
@@ -50,14 +53,21 @@ class _TaskListState extends State<TaskList> {
         ),
         Expanded(
             child: ListView.builder(
-          itemBuilder: (context, index) {
-            return TaskListItem(
-              task: providerList.taskList[index],
-            );
+              itemBuilder: (context, index) {
+            return providerList.taskList[index].isDone
+                ? taskDone(index)
+                : TaskListItem(
+                    task: providerList.taskList[index],
+                  );
           },
           itemCount: providerList.taskList.length,
         ))
       ],
     );
+  }
+
+  TaskListItemDone taskDone(index) {
+    providerList.getAllTasksFromFireStore();
+    return TaskListItemDone(task: providerList.taskList[index]);
   }
 }

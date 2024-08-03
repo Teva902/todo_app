@@ -22,9 +22,10 @@ class FireBaseUtils {
     return getTasksCollection().doc(task.id).delete();
   }
 
-//static Future<void> updateTaskFromFireStore(Task task) {
-//var taskDocRef = getTasksCollection().doc(task.id);
-// var taskData = task.toFireStore();
-//return taskDocRef.update(taskData);
-//}
+  static Future<void> updateTaskInFireStore(Task task) {
+    if (task.id.isEmpty) {
+      throw ArgumentError('Task ID cannot be empty.');
+    }
+    return getTasksCollection().doc(task.id).update(task.toFireStore());
+  }
 }

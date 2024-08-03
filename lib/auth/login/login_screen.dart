@@ -8,8 +8,10 @@ import 'package:todo_app/home/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String routeName = 'Login';
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController =
+      TextEditingController(text: 'Ahmed@gmail.com');
+  TextEditingController passwordController =
+      TextEditingController(text: '123456');
   var formKey = GlobalKey<FormState>();
 
   @override
