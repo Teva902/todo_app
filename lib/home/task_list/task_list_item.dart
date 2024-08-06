@@ -6,6 +6,7 @@ import 'package:todo_app/fire_base_utils.dart';
 import 'package:todo_app/home/task_list/edit_screen.dart';
 import 'package:todo_app/model/task.dart';
 import 'package:todo_app/providers/app_config_provider.dart';
+import 'package:todo_app/providers/auth_user_provider.dart';
 import 'package:todo_app/providers/list_provider.dart';
 
 class TaskListItem extends StatelessWidget {
@@ -19,6 +20,7 @@ class TaskListItem extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
     var listProvider = Provider.of<ListProvider>(context);
     var provide = Provider.of<AppConfigProvider>(context);
+    var authProvider = Provider.of<AuthUserProvider>(context);
     return Container(
       margin: EdgeInsets.all(12),
       child: Slidable(
@@ -31,10 +33,16 @@ class TaskListItem extends StatelessWidget {
                   topLeft: Radius.circular(15),
                   bottomLeft: Radius.circular(15)),
               onPressed: (context) {
-                FireBaseUtils.deleteTaskFromFireStore(task)
-                    .timeout(Duration(milliseconds: 500), onTimeout: () {
+                FireBaseUtils.deleteTaskFromFireStore(
+                        task, authProvider.currentUser!.id)
+                    .then((vaule) {
                   print('task deleted');
-                  listProvider.getAllTasksFromFireStore();
+                  listProvider
+                      .getAllTasksFromFireStore(authProvider.currentUser!.id);
+                }).timeout(Duration(milliseconds: 500), onTimeout: () {
+                  print('task deleted');
+                  listProvider
+                      .getAllTasksFromFireStore(authProvider.currentUser!.id);
                 });
               },
               backgroundColor: AppColors.redColor,
@@ -85,7 +93,8 @@ class TaskListItem extends StatelessWidget {
                     child: IconButton(
                       onPressed: () {
                         task.isDone = true;
-                        FireBaseUtils.updateTaskInFireStore(task);
+                        FireBaseUtils.updateTaskInFireStore(
+                            task, authProvider.currentUser!.id);
                       },
                       icon: Icon(
                         Icons.check,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/home/task_list/task_list_item.dart';
 import 'package:todo_app/home/task_list/task_list_item_done.dart';
+import 'package:todo_app/providers/auth_user_provider.dart';
 import 'package:todo_app/providers/list_provider.dart';
 
 class TaskList extends StatefulWidget {
@@ -12,19 +13,22 @@ class TaskList extends StatefulWidget {
 
 class _TaskListState extends State<TaskList> {
   late ListProvider providerList;
+  late AuthUserProvider authProvider;
 
   @override
   Widget build(BuildContext context) {
     providerList = Provider.of<ListProvider>(context);
+    authProvider = Provider.of<AuthUserProvider>(context);
     if (providerList.taskList.isEmpty) {
-      providerList.getAllTasksFromFireStore();
+      providerList.getAllTasksFromFireStore(authProvider.currentUser!.id);
     }
     return Column(
       children: [
         EasyDateTimeLine(
           initialDate: providerList.selectedDate,
           onDateChange: (selectedDate) {
-            providerList.changeSelectDate(selectedDate);
+            providerList.changeSelectDate(
+                selectedDate, authProvider.currentUser!.id);
           },
           headerProps: const EasyHeaderProps(
             monthPickerType: MonthPickerType.switcher,
@@ -67,7 +71,7 @@ class _TaskListState extends State<TaskList> {
   }
 
   TaskListItemDone taskDone(index) {
-    providerList.getAllTasksFromFireStore();
+    providerList.getAllTasksFromFireStore(authProvider.currentUser!.id);
     return TaskListItemDone(task: providerList.taskList[index]);
   }
 }

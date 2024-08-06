@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/app_colors.dart';
 import 'package:todo_app/fire_base_utils.dart';
 import 'package:todo_app/model/task.dart';
+import 'package:todo_app/providers/auth_user_provider.dart';
 import 'package:todo_app/providers/list_provider.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
@@ -17,10 +18,12 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   String title = '';
   String description = '';
   late ListProvider listProvider;
+  late AuthUserProvider authProvider;
 
   @override
   Widget build(BuildContext context) {
     listProvider = Provider.of<ListProvider>(context);
+    authProvider = Provider.of<AuthUserProvider>(context);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       width: double.infinity,
@@ -110,10 +113,14 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
     if (formKey.currentState!.validate() == true) {
       Task task =
           Task(title: title, description: description, dateTime: selectedDate);
-      FireBaseUtils.addTaskToFireStore(task).timeout(Duration(seconds: 1),
-          onTimeout: () {
+      FireBaseUtils.addTaskToFireStore(task, authProvider.currentUser!.id)
+          .then((value) {
         print('task added successfully');
-        listProvider.getAllTasksFromFireStore();
+        listProvider.getAllTasksFromFireStore(authProvider.currentUser!.id);
+        Navigator.pop(context);
+      }).timeout(Duration(seconds: 1), onTimeout: () {
+        print('task added successfully');
+        listProvider.getAllTasksFromFireStore(authProvider.currentUser!.id);
         Navigator.pop(context);
       });
     }
