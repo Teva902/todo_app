@@ -1,10 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/app_colors.dart';
 import 'package:todo_app/auth/custoum_text_form_field.dart';
 import 'package:todo_app/auth/login/login_screen.dart';
 import 'package:todo_app/dialog_utils.dart';
+import 'package:todo_app/fire_base_utils.dart';
 import 'package:todo_app/home/home_screen.dart';
+import 'package:todo_app/model/my_user.dart';
+import 'package:todo_app/providers/auth_user_provider.dart';
 
 class RegisterScreen extends StatelessWidget {
   static const String routeName = 'register_screen';
@@ -18,7 +22,16 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        Container(
+            color: AppColors.backgroundLightColor,
+            child: Image.asset(
+              'assets/images/background.png',
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.fill,
+            )),
         Scaffold(
+          backgroundColor: Colors.transparent,
           appBar: AppBar(
             title: Text(
               'Create Account ',
@@ -55,7 +68,7 @@ class RegisterScreen extends StatelessWidget {
                         return 'Please Enter Email ';
                       }
                       final bool emailValid = RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(text);
                       if (!emailValid) {
                         return 'Please Enter Valid Email';
@@ -144,6 +157,15 @@ class RegisterScreen extends StatelessWidget {
           email: emailController.text,
           password: passwordController.text,
         );
+
+        MyUser myUser = MyUser(
+            name: nameController.text,
+            email: emailController.text,
+            id: credential.user?.uid ?? '');
+        var authProvider =
+            Provider.of<AuthUserProvider>(context, listen: false);
+        authProvider.updateUser(myUser);
+        await FireBaseUtils.addUserToFireStore(myUser);
         DialogUtils.hideLoading(context);
         DialogUtils.showMassage(
             context: context,
@@ -151,7 +173,7 @@ class RegisterScreen extends StatelessWidget {
             title: 'Success',
             posActionName: 'Ok',
             posAction: () {
-              Navigator.of(context).pushNamed(HomeScreen.routeName);
+              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
             });
         print('Register Successfully');
         print(credential.user?.uid ?? '');

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,6 +10,7 @@ import 'package:todo_app/home/home_screen.dart';
 import 'package:todo_app/home/task_list/edit_screen.dart';
 import 'package:todo_app/my_theme_data.dart';
 import 'package:todo_app/providers/app_config_provider.dart';
+import 'package:todo_app/providers/auth_user_provider.dart';
 import 'package:todo_app/providers/list_provider.dart';
 
 void main() async {
@@ -23,10 +23,11 @@ void main() async {
               messagingSenderId: '325750168347',
               projectId: 'todo-app-5c549'))
       : await Firebase.initializeApp();
-  await FirebaseFirestore.instance.disableNetwork();
+  // await FirebaseFirestore.instance.disableNetwork();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => AppConfigProvider()),
-    ChangeNotifierProvider(create: (context) => ListProvider())
+    ChangeNotifierProvider(create: (context) => ListProvider()),
+    ChangeNotifierProvider(create: (context) => AuthUserProvider())
   ], child: MyApp()));
 }
 
