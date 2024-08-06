@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/app_colors.dart';
 import 'package:todo_app/fire_base_utils.dart';
 import 'package:todo_app/model/task.dart';
+import 'package:todo_app/providers/auth_user_provider.dart';
 import 'package:todo_app/providers/list_provider.dart';
 
 class EditScreen extends StatefulWidget {
@@ -19,10 +20,13 @@ class _EditScreenState extends State<EditScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
   late ListProvider listProvider;
+  late AuthUserProvider authProvider;
 
   @override
   Widget build(BuildContext context) {
     listProvider = Provider.of<ListProvider>(context);
+    authProvider = Provider.of<AuthUserProvider>(context);
+
     var args = ModalRoute.of(context)?.settings.arguments as TaskDetails;
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +53,7 @@ class _EditScreenState extends State<EditScreen> {
                     TextFormField(
                       controller: titleController,
                       validator: (text) {
-                        if (text == null || text.isEmpty) {
+                        if (text == null || text.trim().isEmpty) {
                           return 'Please Enter Task Title';
                         }
                         return null;
@@ -64,7 +68,7 @@ class _EditScreenState extends State<EditScreen> {
                     TextFormField(
                       controller: descController,
                       validator: (text) {
-                        if (text == null || text.isEmpty) {
+                        if (text == null || text.trim().isEmpty) {
                           return 'Please Enter Description';
                         }
                         return null;
@@ -141,8 +145,8 @@ class _EditScreenState extends State<EditScreen> {
     task.title = titleController.text;
     task.description = descController.text;
     task.dateTime = selectedDate;
-    FireBaseUtils.updateTaskInFireStore(task);
-    listProvider.getAllTasksFromFireStore();
+    FireBaseUtils.updateTaskInFireStore(task, authProvider.currentUser!.id);
+    listProvider.getAllTasksFromFireStore(authProvider.currentUser!.id);
     print(task.title);
     print(task.description);
     Navigator.of(context).pop();

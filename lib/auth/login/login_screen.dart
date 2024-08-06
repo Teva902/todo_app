@@ -1,15 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/app_colors.dart';
 import 'package:todo_app/auth/custoum_text_form_field.dart';
 import 'package:todo_app/auth/register/register_screen.dart';
 import 'package:todo_app/dialog_utils.dart';
+import 'package:todo_app/fire_base_utils.dart';
 import 'package:todo_app/home/home_screen.dart';
+import 'package:todo_app/providers/auth_user_provider.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String routeName = 'Login';
   TextEditingController emailController =
-      TextEditingController(text: 'Ahmed@gmail.com');
+      TextEditingController(text: 'ahmed@gmail.com');
   TextEditingController passwordController =
       TextEditingController(text: '123456');
   var formKey = GlobalKey<FormState>();
@@ -18,7 +21,16 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        Container(
+            color: AppColors.backgroundLightColor,
+            child: Image.asset(
+              'assets/images/background.png',
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.fill,
+            )),
         Scaffold(
+          backgroundColor: Colors.transparent,
           appBar: AppBar(
             title: Text(
               'Login ',
@@ -45,7 +57,7 @@ class LoginScreen extends StatelessWidget {
                         return 'Please Enter Email ';
                       }
                       final bool emailValid = RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(text);
                       if (!emailValid) {
                         return 'Please Enter Valid Email';
@@ -106,6 +118,14 @@ class LoginScreen extends StatelessWidget {
         final credential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(
                 email: emailController.text, password: passwordController.text);
+        var user = await FireBaseUtils.readUserFromFireStore(
+            credential.user?.uid ?? '');
+        if (user == null) {
+          return;
+        }
+        var authProvider =
+            Provider.of<AuthUserProvider>(context, listen: false);
+        authProvider.updateUser(user);
         DialogUtils.hideLoading(context);
         DialogUtils.showMassage(
             context: context,
@@ -113,7 +133,7 @@ class LoginScreen extends StatelessWidget {
             title: 'Success',
             posActionName: 'Ok',
             posAction: () {
-              Navigator.of(context).pushNamed(HomeScreen.routeName);
+              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
             });
         print('login successfully');
       } on FirebaseAuthException catch (e) {
