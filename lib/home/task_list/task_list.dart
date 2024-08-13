@@ -2,7 +2,6 @@ import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/home/task_list/task_list_item.dart';
-import 'package:todo_app/home/task_list/task_list_item_done.dart';
 import 'package:todo_app/providers/auth_user_provider.dart';
 import 'package:todo_app/providers/list_provider.dart';
 
@@ -58,11 +57,9 @@ class _TaskListState extends State<TaskList> {
         Expanded(
             child: ListView.builder(
               itemBuilder: (context, index) {
-            return providerList.taskList[index].isDone
-                ? taskDone(index)
-                : TaskListItem(
-                    task: providerList.taskList[index],
-                  );
+            return TaskListItem(
+              task: providerList.taskList[index],
+            );
           },
           itemCount: providerList.taskList.length,
         ))
@@ -70,8 +67,13 @@ class _TaskListState extends State<TaskList> {
     );
   }
 
-  TaskListItemDone taskDone(index) {
-    providerList.getAllTasksFromFireStore(authProvider.currentUser!.id);
-    return TaskListItemDone(task: providerList.taskList[index]);
-  }
+// TaskListItemDone taskDone(index) {
+//   providerList.getAllTasksFromFireStore(authProvider.currentUser!.id);
+//   return TaskListItemDone(task: providerList.taskList[index]);
+// }
 }
+//
+// providerList.taskList[index].isDone
+// ? taskDone(index)
+//     : TaskListItem(
+// task: providerList.taskList[index],

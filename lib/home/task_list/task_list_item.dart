@@ -63,7 +63,8 @@ class TaskListItem extends StatelessWidget {
             children: [
               Container(
                 margin: EdgeInsets.all(12),
-                color: AppColors.primaryColor,
+                color:
+                    task.isDone ? AppColors.greenColor : AppColors.primaryColor,
                 width: width * 0.01,
                 height: height * 0.1,
               ),
@@ -73,29 +74,46 @@ class TaskListItem extends StatelessWidget {
                 children: [
                   Text(
                     task.title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: AppColors.primaryColor),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: task.isDone
+                            ? AppColors.greenColor
+                            : AppColors.primaryColor),
                   ),
                   Text(task.description,
-                      style: Theme.of(context).textTheme.bodyMedium),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: task.isDone
+                              ? AppColors.greenColor
+                              : AppColors.primaryColor)),
                 ],
               )),
-              Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(8),
-                    padding: EdgeInsets.symmetric(horizontal: height * 0.01),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: AppColors.primaryColor),
-                    child: IconButton(
-                      onPressed: () {
-                        task.isDone = true;
-                        FireBaseUtils.updateTaskInFireStore(
-                            task, authProvider.currentUser!.id);
-                      },
+              task.isDone
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'done',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(color: AppColors.greenColor),
+                      ),
+                    )
+                  : Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.all(8),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: height * 0.01),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: AppColors.primaryColor),
+                          child: IconButton(
+                            onPressed: () {
+                              task.isDone = true;
+                              FireBaseUtils.updateTaskInFireStore(
+                                  task, authProvider.currentUser!.id);
+                              FireBaseUtils.addTaskToFireStore(
+                                  task, authProvider.currentUser!.id);
+                            },
                       icon: Icon(
                         Icons.check,
                         size: 35,
@@ -111,13 +129,12 @@ class TaskListItem extends StatelessWidget {
                         color: AppColors.primaryColor),
                     child: IconButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed(EditScreen.routeName,
-                            arguments: TaskDetails(
-                                task: task,
-                                title: task.title,
-                                descrpation: task.description,
-                                dateTime: task.dateTime));
-                      },
+                        Navigator.of(context)
+                                  .pushNamed(EditScreen.routeName,
+                                      arguments: TaskDetails(
+                                        task: task,
+                                      ));
+                            },
                       icon: Icon(
                         Icons.edit,
                         size: 35,
