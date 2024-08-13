@@ -39,6 +39,7 @@ class _EditScreenState extends State<EditScreen> {
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Container(
+          height: MediaQuery.of(context).size.height * 0.70,
           decoration: BoxDecoration(
               color: AppColors.whiteColor,
               borderRadius: BorderRadius.circular(15)),
@@ -59,7 +60,7 @@ class _EditScreenState extends State<EditScreen> {
                         return null;
                       },
                       decoration: InputDecoration(
-                          hintText: args.title,
+                          hintText: args.task.title,
                           hintStyle: Theme.of(context).textTheme.bodyMedium),
                     ),
                     SizedBox(
@@ -74,7 +75,7 @@ class _EditScreenState extends State<EditScreen> {
                         return null;
                       },
                       decoration: InputDecoration(
-                          hintText: args.descrpation,
+                          hintText: args.task.description,
                           hintStyle: Theme.of(context).textTheme.bodyMedium),
                     ),
                     SizedBox(
@@ -94,9 +95,12 @@ class _EditScreenState extends State<EditScreen> {
                         onTap: () {
                           showClander();
                         },
-                        child: Text(args.dateTime.toString(),
+                        child: Text(args.task.dateTime.toString(),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodyMedium),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(color: AppColors.grayColor)),
                       ),
                     ),
                     SizedBox(
@@ -154,17 +158,6 @@ class _EditScreenState extends State<EditScreen> {
 }
 
 class TaskDetails {
-  String title;
-
   Task task;
-
-  String descrpation;
-
-  DateTime dateTime;
-
-  TaskDetails(
-      {required this.title,
-      required this.descrpation,
-      required this.dateTime,
-      required this.task});
+  TaskDetails({required this.task});
 }
