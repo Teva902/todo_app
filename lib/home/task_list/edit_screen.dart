@@ -15,6 +15,8 @@ class EditScreen extends StatefulWidget {
 }
 
 class _EditScreenState extends State<EditScreen> {
+  Task? task;
+
   var selectedDate = DateTime.now();
   var formKey = GlobalKey<FormState>();
   TextEditingController titleController = TextEditingController();
@@ -28,6 +30,11 @@ class _EditScreenState extends State<EditScreen> {
     authProvider = Provider.of<AuthUserProvider>(context);
 
     var args = ModalRoute.of(context)?.settings.arguments as TaskDetails;
+    if (task == null) {
+      task = args.task;
+      titleController = TextEditingController(text: task?.title);
+      descController = TextEditingController(text: task?.description);
+    }
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height * 0.1,

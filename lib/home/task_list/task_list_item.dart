@@ -111,8 +111,6 @@ class TaskListItem extends StatelessWidget {
                               task.isDone = true;
                               FireBaseUtils.updateTaskInFireStore(
                                   task, authProvider.currentUser!.id);
-                              FireBaseUtils.addTaskToFireStore(
-                                  task, authProvider.currentUser!.id);
                             },
                       icon: Icon(
                         Icons.check,
