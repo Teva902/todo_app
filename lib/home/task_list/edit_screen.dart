@@ -34,6 +34,7 @@ class _EditScreenState extends State<EditScreen> {
       task = args.task;
       titleController = TextEditingController(text: task?.title);
       descController = TextEditingController(text: task?.description);
+      selectedDate = args.task.dateTime;
     }
     return Scaffold(
       appBar: AppBar(
@@ -66,9 +67,7 @@ class _EditScreenState extends State<EditScreen> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                          hintText: args.task.title,
-                          hintStyle: Theme.of(context).textTheme.bodyMedium),
+                      decoration: InputDecoration(),
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.02,
@@ -81,9 +80,7 @@ class _EditScreenState extends State<EditScreen> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                          hintText: args.task.description,
-                          hintStyle: Theme.of(context).textTheme.bodyMedium),
+                      decoration: InputDecoration(),
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.03,
@@ -102,7 +99,7 @@ class _EditScreenState extends State<EditScreen> {
                         onTap: () {
                           showClander();
                         },
-                        child: Text(args.task.dateTime.toString(),
+                        child: Text(selectedDate.toString(),
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
