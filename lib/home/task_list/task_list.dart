@@ -56,10 +56,8 @@ class _TaskListState extends State<TaskList> {
         ),
         Expanded(
             child: ListView.builder(
-              itemBuilder: (context, index) {
-            return TaskListItem(
-              task: providerList.taskList[index],
-            );
+          itemBuilder: (context, index) {
+            return taskItem(index);
           },
           itemCount: providerList.taskList.length,
         ))
@@ -67,13 +65,8 @@ class _TaskListState extends State<TaskList> {
     );
   }
 
-// TaskListItemDone taskDone(index) {
-//   providerList.getAllTasksFromFireStore(authProvider.currentUser!.id);
-//   return TaskListItemDone(task: providerList.taskList[index]);
-// }
+  TaskListItem taskItem(index) {
+    providerList.getAllTasksFromFireStore(authProvider.currentUser!.id);
+    return TaskListItem(task: providerList.taskList[index]);
+  }
 }
-//
-// providerList.taskList[index].isDone
-// ? taskDone(index)
-//     : TaskListItem(
-// task: providerList.taskList[index],
